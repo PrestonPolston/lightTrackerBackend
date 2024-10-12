@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "name": "lighttrackerbackend",
+  "version": "1.0.0",
+  "description": "## Description This repository will serve as the home for my new **LightTrackerBackend**. It is an attempt to learn **MongoDB** and develop a robust backend for the application.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
