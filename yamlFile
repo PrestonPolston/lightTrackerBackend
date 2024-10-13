@@ -1,0 +1,23 @@
+version: "3.8" # Specify the version of Docker Compose
+
+services:
+  server:
+    build:
+      context: . # Build from the Dockerfile in the current directory
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/lightTrakr # MongoDB connection string
+    ports:
+      - "3000:3000" # Map host port 3000 to container port 3000
+    depends_on:
+      - mongodb # Ensure MongoDB starts before the server
+
+  mongodb:
+    image: mongo:latest # Use the official MongoDB image
+    ports:
+      - "27017:27017" # Expose MongoDB port
+    volumes:
+      - mongo-data:/data/db # Persist MongoDB data between container restarts
+
+volumes:
+  mongo-data: # Named volume for MongoDB data persistence
