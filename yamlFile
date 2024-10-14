@@ -1,4 +1,4 @@
-version: "3.8" # Specify the version of Docker Compose
+version: "3.8"
 
 services:
   server:
@@ -20,4 +20,4 @@ services:
       - mongo-data:/data/db # Persist MongoDB data between container restarts
 
 volumes:
-  mongo-data: # Named volume for MongoDB data persistence
+  mongo-data:
