@@ -1,21 +1,17 @@
-// auth/user.js
 const express = require("express");
-const User = require("../models/user");
 const router = express.Router();
+const { getAllUsers, createUser, updateUser } = require("../db/user");
 
 // Route to create a new user
 router.post("/users", async (req, res) => {
   try {
-    const { name, email, password, age } = req.body;
-
-    const newUser = new User({ name, email, password, age });
-    await newUser.save();
-
+    const newUser = await createUser(req);
+    console.log("User created:", newUser);
     res
       .status(201)
       .json({ message: "User created successfully!", user: newUser });
   } catch (error) {
-    console.error(error);
+    console.error("Error creating user:", error);
 
     if (error.code === 11000) {
       return res.status(400).json({ message: "Email already exists!" });
@@ -29,13 +25,30 @@ router.post("/users", async (req, res) => {
 // Route to get all users
 router.get("/users", async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await getAllUsers();
+    console.log(users);
     res.status(200).json(users);
   } catch (error) {
-    console.error(error);
+    console.error("Error retrieving users:", error);
     res
       .status(500)
       .json({ message: "Error retrieving users", error: error.message });
+  }
+});
+
+// Route to update user
+router.put("/users", async (req, res) => {
+  try {
+    const updatedUser = await updateUser(req);
+    console.log("User updated:", updatedUser);
+    res
+      .status(200)
+      .json({ message: "User updated successfully!", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res
+      .status(404)
+      .json({ message: "Error updating user", error: error.message });
   }
 });
 

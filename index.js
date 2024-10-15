@@ -20,7 +20,7 @@ mongoose
   });
 
 // Use auth routes
-app.use("/auth", require("./auth")); 
+app.use("/auth", require("./auth"));
 
 // Start the server
 if (require.main === module) {
