@@ -1,4 +1,5 @@
-const User = require("../models/user"); // It's sufficient to have this line once
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
 // Get all users
 const getAllUsers = async () => {
@@ -14,7 +15,8 @@ const getAllUsers = async () => {
 const createUser = async (req) => {
   try {
     const { name, email, password, age } = req.body;
-    const newUser = new User({ name, email, password, age });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, password: hashedPassword, age });
     await newUser.save();
     return newUser;
   } catch (error) {
@@ -27,16 +29,14 @@ const updateUser = async (req) => {
   try {
     const { email, name, password, age } = req.body;
     const user = await User.findOne({ email });
-
     if (!user) {
       throw new Error("User Not Found");
     }
-
     if (name) {
       user.name = name;
     }
     if (password) {
-      user.password = password;
+      user.password = await bcrypt.hash(password, 10);
     }
     if (age) {
       user.age = age;
@@ -48,5 +48,6 @@ const updateUser = async (req) => {
     throw new Error("Error updating user: " + error.message);
   }
 };
+
 
 module.exports = { getAllUsers, createUser, updateUser };
