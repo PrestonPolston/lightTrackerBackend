@@ -52,4 +52,18 @@ const updateUser = async (req) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, updateUser };
+// Delete user information
+const deleteUser = async (req) => {
+  try {
+    const { email } = req.body;
+    const result = await User.deleteOne({ email });
+    if (result.deletedCount === 0) {
+      throw new Error("No user found with that email.");
+    }
+    return { message: "successfully deleted user." };
+  } catch (error) {
+    throw new Error("Error deleting user: " + error.message);
+  }
+};
+
+module.exports = { getAllUsers, createUser, updateUser, deleteUser };

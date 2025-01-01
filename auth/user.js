@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { getAllUsers, createUser, updateUser } = require("../db/user");
+const {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("../db/user");
 
 // Route to create a new user
 router.post("/users", async (req, res) => {
   try {
-    const newUser = await createUser(req);
-    console.log("User created:", newUser);
-    res
-      .status(201)
-      .json({ message: "User created successfully!", user: newUser });
+    const result = await createUser(req);
+    console.log("User created:", result.user);
+    res.status(201).json(result);
   } catch (error) {
     console.error("Error creating user:", error);
 
@@ -49,6 +52,20 @@ router.put("/users", async (req, res) => {
     res
       .status(404)
       .json({ message: "Error updating user", error: error.message });
+  }
+});
+
+// Route to delete user
+router.delete("/users", async (req, res) => {
+  try {
+    const removeUser = await deleteUser(req);
+    console.log(removeUser);
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error removing user:", error);
+    res
+      .status(404)
+      .json({ message: "Error removing user", error: error.message });
   }
 });
 
