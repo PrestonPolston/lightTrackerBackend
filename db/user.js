@@ -18,7 +18,10 @@ const createUser = async (req) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword, age });
     await newUser.save();
-    return newUser;
+    return {
+      message: "User created successfully!",
+      user: newUser,
+    };
   } catch (error) {
     throw new Error("Error creating new user: " + error.message);
   }
@@ -43,11 +46,10 @@ const updateUser = async (req) => {
     }
 
     await user.save();
-    return user;
+    return { user, message: "User updated successfully!" };
   } catch (error) {
     throw new Error("Error updating user: " + error.message);
   }
 };
-
 
 module.exports = { getAllUsers, createUser, updateUser };
