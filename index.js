@@ -1,10 +1,14 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+//Enable CORS
+app.use(cors());
 
 // Define database URI
 const dbUri = process.env.MONGODB_URI || "mongodb://localhost:27017/lightTrakr";
