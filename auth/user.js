@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllUsers,
+  userLogin,
   createUser,
   updateUser,
   deleteUser,
@@ -36,6 +37,16 @@ router.get("/users", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error retrieving users", error: error.message });
+  }
+});
+
+//Route to login user
+router.post("/users/login", async (req, res) => {
+  try {
+    const { user, tempToken } = await userLogin(req);
+    res.status(200).json({ user, tempToken });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
   }
 });
 
