@@ -11,6 +11,31 @@ const getAllUsers = async () => {
   }
 };
 
+//Login user
+const userLogin = async (req) => {
+  try {
+    //temporary token we will later implement JWT
+    let tempToken = true;
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    // checking for valid password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
+      tempToken = true;
+    } else {
+      throw new Error("Invalid password");
+    }
+    return { user, tempToken };
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+};
+
 // Create a new user
 const createUser = async (req) => {
   try {
@@ -66,4 +91,4 @@ const deleteUser = async (req) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, userLogin, createUser, updateUser, deleteUser };
